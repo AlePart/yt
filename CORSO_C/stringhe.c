@@ -1,96 +1,84 @@
+
 #include <stdio.h>
-#include <stdarg.h>
 #include <string.h>
+#include <stdlib.h>
 
-int sum(int count, ...) {
-	va_list args;
-	va_start(args, count);
-
-	int sum = 0;
-	for (int i = 0; i < count; i++) {
-		sum += va_arg(args, int);
-	}
-
-	va_end(args);
-	return sum;
+// Funzione per mostrare l'uso di strlen()
+void demo_strlen() {
+    char saluto[] = "Ciao\0";
+    int lunghezza = strlen(saluto);
+    printf("Lunghezza di '%s': %d\n", saluto, lunghezza);
 }
 
-void print_numbers(const char* format, ...) {
-    va_list args;
-    va_start(args, format);
+// Funzione per mostrare l'uso di strcpy()
+void demo_strcpy() {
+    char saluto[] = "Ciao\0";
+    char destinazione[10];
+    strcpy_s(destinazione, sizeof(destinazione), saluto);  // Copia di saluto in destinazione
+    printf("Copia di '%s' in destinazione: %s\n", saluto, destinazione);
+}
 
-    const char* p = format;
-    int i = 0;
-    while (*p != '\0') {
-        if (*p == 'd') {
-            int num = va_arg(args, int);
-            printf("%d ", num);
-        }
-        else if (*p == 'f') {
-            double num = va_arg(args, double);
-            printf("%f ", num);
-        }
-        else if (*p == 'c') {
-            char ch = (char)va_arg(args, int); // va_arg promuove i char a int
-            printf("%c ", ch);
-        }
-        p++;
-        printf("%d\n", ++i);
+// Funzione per mostrare l'uso di strcat()
+void demo_strcat() {
+    char saluto[20] = "Ciao\0";
+    strcat_s(saluto, sizeof(saluto), " Mondo");  // Concatenazione di " Mondo" a saluto
+    printf("Concatenazione di 'Ciao' e ' Mondo': %s\n", saluto);
+}
+
+// Funzione per mostrare l'uso di strcmp()
+void demo_strcmp() {
+    char saluto1[] = "Ciao\0";
+    char saluto2[] = "Ciao\0";
+    int confronto = strcmp(saluto1, saluto2);
+    printf("Confronto tra '%s' e '%s': %d\n", saluto1, saluto2, confronto);
+}
+
+// Funzione per mostrare l'uso di strdup()
+void demo_strdup() {
+    char saluto[] = "Ciao\0";
+    char* copia_saluto = strdup(saluto);
+    printf("Copia della stringa '%s' usando strdup(): %s\n", saluto, copia_saluto);
+    free(copia_saluto);  // Liberazione della memoria
+}
+
+// Funzione per mostrare l'uso di strchr() e strrchr()
+void demo_strchr_strrchr() {
+    char saluto[] = "Ciao Mondo!\0";
+    char* prima_occorrenza = strchr(saluto, 'M');
+    char* ultima_occorrenza = strrchr(saluto, 'M');
+    printf("Prima occorrenza di 'o' in '%s': %s\n", saluto, prima_occorrenza);
+    printf("Ultima occorrenza di 'o' in '%s': %s\n", saluto, ultima_occorrenza);
+}
+
+// Funzione per mostrare l'uso di strstr()
+void demo_strstr() {
+    char frase[] = "Ciao Mondo!\0";
+    char* sottostringa = strstr(frase, "Mon");
+    printf("Ricerca di 'Mon' in '%s': %s\n", frase, sottostringa);
+}
+
+// Funzione per mostrare l'uso di strtok()
+void demo_strtok() {
+    char frase[] = "12,34,456,565,343,343,34,3434";
+    char* next_token = NULL;
+    char* token = strtok_s(frase, ",", &next_token);
+
+    while (token != NULL) {
+        printf("Token: %s\n", token);
+        token = strtok_s(NULL, ",", &next_token);
     }
-
-    va_end(args);
-    printf("\n");
 }
 
-
-typedef struct {
-    void (*func)(int); 
-} Functor;
-
-typedef void (*FunctorFunc)(int);
-
-void print_square(int n) {
-    printf("Square of %d is %d\n", n, n * n);
-}
-
-void print_cube(int n) {
-	printf("Cube of %d is %d\n", n, n * n * n);
-}
-
-void print_quadruple(int n) {
-	printf("Quadruple of %d is %d\n", n, n * n * n * n);
-}
-
-
-void use_functor(Functor f, int value) {
-    f.func(value);
-}
-
-
-
+// Main function
 int main() {
-
-
-
-    printf("Sum: %d\n", sum(3, 1, 2, 3));
-    print_numbers("dfc\0", 42, 3.14, 'A');
-
-  
-    Functor f;
-    f.func = print_square; 
-
-    use_functor(f, 5); 
-
-    f.func = print_cube;
-    use_functor(f, 5);
-
-    f.func = print_quadruple;
-    use_functor(f, 5);
-
-    FunctorFunc f2 = print_square;
-
-    f2(2);
-
+    //demo_strlen();
+    //demo_strcpy();
+    //demo_strcat();
+    //demo_strcmp();
+    //demo_strdup();
+    //demo_strchr_strrchr();
+    //demo_strstr();
+    demo_strtok();
 
     return 0;
 }
